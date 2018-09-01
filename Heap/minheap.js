@@ -12,7 +12,7 @@ class MinHeap {
   }
 
   getRightIndex(index){
-    return (2+ index) + 2;
+    return (2 * index) + 2;
   }
 
   getParentIndex(index){
@@ -40,6 +40,48 @@ class MinHeap {
         parent = this.getParentIndex(index);
       }
   }
+    
+ siftDown(index){
+    let element = index;
+    const left = this.getLeftIndex(index);
+    const right = this.getRightIndex(index);
+    const size = this.size();
+    if (
+      left < size &&
+      this.compareFn(this.heap[element], this.heap[left]) === Compare.BIGGER_THAN
+    ) {
+      element = left;
+        console.log('left ' + left +' '+ this.heap[left]);
+    }
+    if (
+      right < size &&
+      this.compareFn(this.heap[element], this.heap[right]) === Compare.BIGGER_THAN
+    ) {
+      element = right;
+        console.log('right ' + right + ' ' + this.heap[right]);
+    }
+    if (index !== element) {
+        console.log('swap(' +index+','+element+')');
+      swap(this.heap, index, element);
+        console.log('siftDown!('+element+')');
+      this.siftDown(element);
+        
+    }
+}
+    
+ heapify(array) {
+    if (array) {
+      this.heap = array;
+    }
+    const maxIndex = Math.floor(this.size() / 2) - 1;
+    for (let i = maxIndex; i >= 0; i--) {
+        console.log('siftDown('+i+')');
+      this.siftDown(i);
+       
+        
+    }
+    return this.heap;
+  }
 
   size(){
     return this.heap.length;
@@ -58,12 +100,4 @@ class MinHeap {
   }
 }
 
-let heap = new MinHeap();
-
-heap.insert(15);
-heap.insert(10);
-heap.insert(5);
-heap.insert(100)
-
-console.log(heap.getAsArray());
-console.log(heap.findMinimum());
+module.exports = MinHeap;
